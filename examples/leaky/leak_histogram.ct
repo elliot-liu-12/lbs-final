@@ -1,0 +1,11 @@
+// expect-ct: reject CT-INDEX
+// expect-ni: accept
+// leaks: yes
+// Histogram of secret data: the store addresses reveal the data, even though
+// the histogram itself is secret.
+secret int[8] data;
+secret int[8] hist;
+
+for i in 0 .. 8 {
+  hist[data[i] & 7] := hist[data[i] & 7] + 1;
+}

@@ -1,0 +1,9 @@
+// expect-ct: reject EXPLICIT-FLOW
+// expect-ni: reject EXPLICIT-FLOW
+// leaks: no
+// The value is always 0, but the type system does not reason about
+// arithmetic identities.
+secret int key;
+public int out;
+
+out := key * 0;

@@ -1,0 +1,10 @@
+// expect-ct: reject CT-BRANCH
+// expect-ni: accept
+// leaks: no
+// `key & 0` is always false, so the branch outcome never varies.
+secret int key;
+secret int s;
+
+if (key & 0) {
+  s := s + 1;
+}

@@ -1,0 +1,17 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// Conditional swap of two limb arrays, as used in the X25519 Montgomery
+// ladder.  The swap decision is secret; only XOR/AND masks are used.
+secret int swap;
+secret int[8] x;
+secret int[8] y;
+secret int mask;
+secret int t;
+
+mask := 0 - (swap & 1);
+for i in 0 .. 8 {
+  t := mask & (x[i] ^ y[i]);
+  x[i] := x[i] ^ t;
+  y[i] := y[i] ^ t;
+}

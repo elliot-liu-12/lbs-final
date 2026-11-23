@@ -1,0 +1,88 @@
+// CT-IMP: IMP with security labels, fixed-size arrays, bounded loops.
+
+program: decl* stmt*
+
+// ---------------------------------------------------------------- declarations
+?decl: scalar_decl | array_decl
+scalar_decl: LABEL "int" NAME ("=" SIGNED_NUMBER)? ";"
+array_decl: LABEL "int" "[" INT "]" NAME ("=" "{" int_list? "}")? ";"
+int_list: SIGNED_NUMBER ("," SIGNED_NUMBER)* ","?
+
+LABEL: "public" | "secret"
+
+// ---------------------------------------------------------------- statements
+?stmt: assign | array_assign | if_stmt | for_stmt | skip
+assign: NAME ":=" expr ";"
+array_assign: NAME "[" expr "]" ":=" expr ";"
+if_stmt: IF "(" expr ")" block (ELSE (block | if_stmt))?
+for_stmt: FOR NAME "in" expr ".." expr block
+skip: SKIP ";"
+block: "{" stmt* "}"
+
+IF: "if"
+ELSE: "else"
+FOR: "for"
+SKIP: "skip"
+
+// ---------------------------------------------------------------- expressions
+// Lowest to highest precedence (C-like).  `&&` and `||` are NOT short-circuit:
+// both operands are always evaluated, so they introduce no control flow.
+?expr: lor
+?lor: land | lor OROR land -> binop
+?land: bor | land ANDAND bor -> binop
+?bor: bxor | bor BOR bxor -> binop
+?bxor: band | bxor BXOR band -> binop
+?band: eq | band BAND eq -> binop
+?eq: rel | eq (EQ | NE) rel -> binop
+?rel: shift | rel (LE | GE | LT | GT) shift -> binop
+?shift: sum | shift (SHL | SHR) sum -> binop
+?sum: product | sum (PLUS | MINUS) product -> binop
+?product: unary | product (STAR | SLASH | PERCENT) unary -> binop
+?unary: atom | (MINUS | BANG | TILDE) unary -> unop
+?atom: NUMBER -> int_lit
+     | TRUE -> true_lit
+     | FALSE -> false_lit
+     | NAME -> var
+     | NAME "[" expr "]" -> index
+     | SELECT "(" expr "," expr "," expr ")" -> select
+     | LEN "(" NAME ")" -> len_expr
+     | "(" expr ")"
+
+TRUE: "true"
+FALSE: "false"
+SELECT: "select"
+LEN: "len"
+
+OROR: "||"
+ANDAND: "&&"
+BOR: "|"
+BXOR: "^"
+BAND: "&"
+EQ: "=="
+NE: "!="
+LE: "<="
+GE: ">="
+LT: "<"
+GT: ">"
+SHL: "<<"
+SHR: ">>"
+PLUS: "+"
+MINUS: "-"
+STAR: "*"
+SLASH: "/"
+PERCENT: "%"
+BANG: "!"
+TILDE: "~"
+
+NUMBER: /0[xX][0-9a-fA-F]+|[0-9]+/
+SIGNED_NUMBER: /-?(0[xX][0-9a-fA-F]+|[0-9]+)/
+
+NAME: /(?!(public|secret|int|if|else|for|in|skip|select|len|true|false)\b)[A-Za-z_][A-Za-z0-9_]*/
+
+%import common.INT
+%import common.WS
+%import common.CPP_COMMENT
+%import common.C_COMMENT
+%ignore WS
+%ignore CPP_COMMENT
+%ignore C_COMMENT

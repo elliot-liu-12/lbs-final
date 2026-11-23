@@ -1,0 +1,13 @@
+// expect-ct: reject CT-BRANCH
+// expect-ni: accept
+// leaks: yes
+// witness: pw=0x5eed1234 | pw=0
+// Backdoor-style comparison against a magic constant.  The leak is real but
+// occurs only when pw == 0x5eed1234, so random two-run testing is unlikely to
+// witness it; the type checker rejects it regardless.
+secret int pw;
+secret int unlocked;
+
+if (pw == 0x5eed1234) {
+  unlocked := 1;
+}

@@ -1,0 +1,10 @@
+// expect-ct: reject CT-LOOP
+// expect-ni: accept
+// leaks: no
+// Both arms of the select are 8, so the iteration count is always 8.
+secret int key;
+secret int acc;
+
+for i in 0 .. select(key, 8, 8) {
+  acc := acc + i;
+}

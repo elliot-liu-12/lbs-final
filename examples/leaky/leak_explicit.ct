@@ -1,0 +1,8 @@
+// expect-ct: reject EXPLICIT-FLOW
+// expect-ni: reject EXPLICIT-FLOW
+// leaks: yes
+// Direct copy of (a function of) the key into a public output.
+secret int key;
+public int out;
+
+out := (key + 1) * 2;

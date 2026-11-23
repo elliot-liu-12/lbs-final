@@ -1,0 +1,12 @@
+// expect-ct: reject CT-LOOP
+// expect-ni: reject IMPLICIT-FLOW
+// leaks: yes
+// A public counter incremented inside a secret-bounded loop ends up equal to
+// the secret.  The assignment itself only mixes public data, so this is an
+// implicit flow through the loop count.
+secret int key;
+public int count;
+
+for i in 0 .. (key & 15) {
+  count := count + 1;
+}

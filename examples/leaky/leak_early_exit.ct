@@ -1,0 +1,18 @@
+// expect-ct: reject CT-BRANCH
+// expect-ni: accept
+// leaks: yes
+// memcmp with early exit: the position of the first mismatch is visible
+// through the branch trace (the classic MAC-forgery timing attack).
+secret int[8] a;
+secret int[8] b;
+secret int done;
+secret int eq = 1;
+
+for i in 0 .. 8 {
+  if (done == 0) {
+    if (a[i] != b[i]) {
+      eq := 0;
+      done := 1;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+// expect-ct: reject CT-INDEX
+// expect-ni: accept
+// leaks: no
+// `key ^ key` is always 0, so the address is constant.
+public int[4] tbl = {1, 2, 3, 4};
+secret int key;
+secret int out;
+
+out := tbl[key ^ key];

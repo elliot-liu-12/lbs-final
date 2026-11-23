@@ -1,0 +1,19 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// Branches and loop bounds may depend on public data even when the branches
+// manipulate secrets.
+public int mode;
+public int rounds;
+secret int key;
+secret int h;
+
+for r in 0 .. (rounds & 7) {
+  if (mode == 1) {
+    h := (h ^ key) * 31;
+  } else if (mode == 2) {
+    h := h + (key << 3);
+  } else {
+    h := h - key;
+  }
+}

@@ -1,0 +1,14 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// Fletcher-16 checksum over secret data of public length.
+secret int[12] data;
+secret int s1;
+secret int s2;
+secret int check;
+
+for i in 0 .. len(data) {
+  s1 := (s1 + (data[i] & 255)) % 255;
+  s2 := (s2 + s1) % 255;
+}
+check := (s2 << 8) | s1;

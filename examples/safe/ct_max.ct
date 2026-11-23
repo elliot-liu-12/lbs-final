@@ -1,0 +1,11 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// Branch-free maximum of a secret array.
+secret int[10] xs;
+secret int best;
+
+best := xs[0];
+for i in 1 .. len(xs) {
+  best := select(xs[i] > best, xs[i], best);
+}

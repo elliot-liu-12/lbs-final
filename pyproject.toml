@@ -1,0 +1,25 @@
+[project]
+name = "ctcheck"
+version = "0.1.0"
+description = "Security type checker and instrumented interpreter for constant-time CT-IMP programs"
+requires-python = ">=3.9"
+dependencies = ["lark>=1.1"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+ctcheck = "ctcheck.cli:main"
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["ctcheck"]
+
+[tool.setuptools.package-data]
+ctcheck = ["grammar.lark"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

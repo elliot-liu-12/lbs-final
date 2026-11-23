@@ -1,0 +1,14 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// Constant-time MAC comparison: every byte is examined, differences are
+// accumulated with OR, and there is no early exit.
+secret int[16] mac;
+secret int[16] expected;
+secret int diff;
+secret int equal;
+
+for i in 0 .. len(mac) {
+  diff := diff | (mac[i] ^ expected[i]);
+}
+equal := diff == 0;

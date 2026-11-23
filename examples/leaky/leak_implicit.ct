@@ -1,0 +1,10 @@
+// expect-ct: reject CT-BRANCH
+// expect-ni: reject IMPLICIT-FLOW
+// leaks: yes
+// Implicit flow: a public flag is set under a secret condition.
+secret int key;
+public int flag;
+
+if (key > 100) {
+  flag := 1;
+}

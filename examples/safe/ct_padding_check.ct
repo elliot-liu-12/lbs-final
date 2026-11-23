@@ -1,0 +1,16 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// Constant-time PKCS#7-style padding check: the padding length is secret, so
+// all 16 bytes are always inspected and membership is computed with masks.
+secret int[16] buf;
+secret int padlen;
+secret int bad;
+secret int in_pad;
+
+padlen := buf[15];
+bad := (padlen < 1) | (padlen > 16);
+for i in 0 .. 16 {
+  in_pad := (15 - i) < padlen;
+  bad := bad | (in_pad & (buf[i] != padlen));
+}

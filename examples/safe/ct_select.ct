@@ -1,0 +1,15 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// Branch-free choice between two secrets driven by a secret bit, written
+// both with the `select` primitive and with an explicit bit mask.
+secret int bit;
+secret int a;
+secret int b;
+secret int r1;
+secret int r2;
+secret int mask;
+
+r1 := select(bit & 1, a, b);
+mask := 0 - (bit & 1);            // all ones if bit is set, else zero
+r2 := (a & mask) | (b & ~mask);

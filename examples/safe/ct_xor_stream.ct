@@ -1,0 +1,13 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// XOR stream encryption.  The key-stream position depends only on the public
+// loop counter and the public nonce.
+public int nonce;
+secret int[8] key;
+secret int[8] pt;
+secret int[8] ct;
+
+for i in 0 .. 8 {
+  ct[i] := pt[i] ^ key[(i + nonce) & 7];
+}

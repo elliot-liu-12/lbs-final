@@ -1,0 +1,12 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// Secret-indexed S-box lookup done safely: scan the whole table with a public
+// index and keep the matching entry with `select`.
+public int[16] sbox = {12, 5, 6, 11, 9, 0, 10, 13, 3, 14, 15, 8, 4, 7, 1, 2};
+secret int idx;
+secret int out;
+
+for i in 0 .. 16 {
+  out := select(i == (idx & 15), sbox[i], out);
+}

@@ -1,0 +1,11 @@
+// expect-ct: reject CT-INDEX
+// expect-ni: accept
+// leaks: yes
+// AES-style table lookup indexed by key ^ plaintext: the memory address (and
+// so the cache line) depends on the key.
+public int[16] sbox = {12, 5, 6, 11, 9, 0, 10, 13, 3, 14, 15, 8, 4, 7, 1, 2};
+public int pt;
+secret int key;
+secret int out;
+
+out := sbox[(key ^ pt) & 15];

@@ -1,0 +1,10 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// Hamming weight of a secret word with a fixed 32-iteration loop.
+secret int x;
+secret int count;
+
+for k in 0 .. 32 {
+  count := count + ((x >> k) & 1);
+}

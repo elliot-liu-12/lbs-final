@@ -1,0 +1,12 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// Apply a public permutation to secret data.  The store address `perm[i]` is
+// read from a public table at a public index, so it is public.
+public int[8] perm = {3, 6, 0, 7, 2, 5, 1, 4};
+secret int[8] input;
+secret int[8] output;
+
+for i in 0 .. 8 {
+  output[perm[i]] := input[i];
+}

@@ -1,0 +1,17 @@
+// expect-ct: reject CT-BRANCH
+// expect-ni: accept
+// leaks: yes
+// Textbook square-and-multiply: the multiply happens only when the key bit is
+// set, so the branch outcomes (and the cost) reveal the exponent.  NI typing
+// accepts it because only secret variables are written.
+public int m = 46337;
+secret int base;
+secret int exp;
+secret int r = 1;
+
+for k in 0 .. 16 {
+  r := (r * r) % m;
+  if ((exp >> (15 - k)) & 1) {
+    r := (r * base) % m;
+  }
+}

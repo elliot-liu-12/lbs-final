@@ -1,0 +1,16 @@
+// expect-ct: reject CT-BRANCH EXPLICIT-FLOW
+// expect-ni: reject EXPLICIT-FLOW
+// leaks: no
+// Labels are flow-insensitive: `tmp` is declared secret, so it stays secret
+// even after being overwritten with a public constant.
+secret int key;
+secret int tmp;
+secret int s;
+public int copy;
+
+tmp := key;
+tmp := 5;
+if (tmp > 3) {
+  s := 1;
+}
+copy := tmp;

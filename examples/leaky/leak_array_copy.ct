@@ -1,0 +1,10 @@
+// expect-ct: reject EXPLICIT-FLOW
+// expect-ni: reject EXPLICIT-FLOW
+// leaks: yes
+// Copying a secret buffer into a public one element by element.
+secret int[4] key;
+public int[4] wire;
+
+for i in 0 .. 4 {
+  wire[i] := key[i];
+}

@@ -1,0 +1,23 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// Modular exponentiation with a Montgomery ladder: a fixed number of
+// iterations, and both products are always computed.  (With --vartime-div the
+// checker would reject the secret `%` operands.)
+public int m = 46337;             // m*m fits in 32 bits
+secret int base;
+secret int exp;
+secret int r0 = 1;
+secret int r1;
+secret int bit;
+secret int t0;
+secret int t1;
+
+r1 := base % m;
+for k in 0 .. 16 {
+  bit := (exp >> (15 - k)) & 1;
+  t0 := select(bit, (r0 * r1) % m, (r0 * r0) % m);
+  t1 := select(bit, (r1 * r1) % m, (r0 * r1) % m);
+  r0 := t0;
+  r1 := t1;
+}

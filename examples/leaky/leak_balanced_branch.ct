@@ -1,0 +1,16 @@
+// expect-ct: reject CT-BRANCH
+// expect-ni: accept
+// leaks: yes
+// Both arms do the same amount of work, so the modeled cost is equal; the
+// branch decision itself is still observable (e.g. via the branch predictor),
+// so the CT discipline rejects it.  Compare with ct_select.ct.
+secret int bit;
+secret int a;
+secret int b;
+secret int r;
+
+if (bit & 1) {
+  r := a;
+} else {
+  r := b;
+}

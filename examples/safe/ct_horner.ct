@@ -1,0 +1,13 @@
+// expect-ct: accept
+// expect-ni: accept
+// leaks: no
+// Evaluate a polynomial with secret coefficients at a secret point (Horner's
+// rule); the degree is public.
+public int degree = 6;
+secret int[7] coeff;
+secret int x;
+secret int y;
+
+for k in 0 .. degree + 1 {
+  y := y * x + coeff[degree - k];
+}
